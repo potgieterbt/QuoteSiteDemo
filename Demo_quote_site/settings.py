@@ -4,8 +4,8 @@ ENVIRONMENT = os.getenv('ENVIRONMENT', 'development')
 
 DEBUG = True
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SECRET_KEY = '-05sgp9!deq=q1nltm@^^2cc+v29i(tyybv3v2t77qi66czazj'
-ALLOWED_HOSTS = ['easy-quote-demo.herokuapp.com']
+SECRET_KEY = '888ba62bd9957a8a0f7748196bdc1004c5bd619bc1852b1cad8601ac110c'
+ALLOWED_HOSTS = ['easy-quote-demo.herokuapp.com', '127.0.0.1']
 
 INSTALLED_APPS = [
     'allauth',
@@ -60,7 +60,7 @@ USE_TZ = True
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static_files')]
-STATIC_ROOT = os.path.join(BASE_DIR, 'static_files')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
