@@ -23,6 +23,8 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -55,18 +57,17 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static_files')]
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+DEBUG = config('DEBUG', default=False, cast=bool)
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.path.join(BASE_DIR, 'db.sqlite3')
-    }
+    "default": dj_database_url.config(default=config("postgres://dkyvdeffveaxem:7d7428086ae32b14c351fdf96e23ceb5545665e37f83a593f830684faf73bc98@ec2-50-17-90-177.compute-1.amazonaws.com:5432/d62bf3qimu1m4t"))
+
 }
 
 if ENVIRONMENT == 'production':
