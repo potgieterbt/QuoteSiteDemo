@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+
+<html>
+{% block head %}
+
+<head>
+    <title>Home</title>
+</head>
+{% endblock head %}
+
+    {% block content %}
+<body class="bg-dark">
+    <main class="mt-5 pt-5">
+        <div class="container">
+            <!--Section: Jumbotron-->
+            <section class="card aqua-gradient wow" id="intro">
+
+                <!-- Content -->
+                <div class="card-body text-grey text-center py-2 px-2 my-2">
+
+                    <h1 class="mb-4">
+                        <strong>Make A New Quote</strong>
+                    </h1>
+                    <a href="/quotes/new/" class="btn btn-outline-black btn-lg">Make New Quote
+                        <i class="fas fa-pen ml-2"></i>
+                    </a>
+
+                </div>
+                <!-- Content -->
+            </section>
+            <hr class="mb-3">
+            <!--Section: Jumbotron-->
+            <section class="card aqua-gradient wow" id="intro">
+
+                <!-- Content -->
+                <div class="card-body text-grey text-center py-2 px-2 my-2">
+
+                    <h1 class="mb-4">
+                        <strong>View All Avalible Items</strong>
+                    </h1>
+                    <a href="/items" class="btn btn-outline-black btn-lg">View All Items
+                        <i class="fas fa-pen ml-2"></i>
+                    </a>
+
+                </div>
+                <!-- Content -->
+            </section>
+            <hr class="mb-3">
+            <!--Section: Jumbotron-->
+            <section class="card aqua-gradient wow" id="intro">
+
+                <!-- Content -->
+                <div class="card-body text-grey text-center py-2 px-2 my-2">
+
+                    <h1 class="mb-4">
+                        <strong>View All Quotes</strong>
+                    </h1>
+                    <a href="/quotes/" class="btn btn-outline-black btn-lg">View Quotes
+                        <i class="fas fa-pen ml-2"></i>
+                    </a>
+
+                </div>
+                <!-- Content -->
+            </section>
+            <hr class="mb-3">
+        </div>
+    </main>
+</body>
+    {% endblock content %}
+
+</html>

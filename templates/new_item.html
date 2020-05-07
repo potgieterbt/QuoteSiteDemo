@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+<html>
+{% load static %}
+<link rel="stylesheet" href="{% static 'bootstrap.css' %}">
+<link rel="stylesheet" href="{% static 'style.css' %}">
+{% block head %}
+<head>
+    <title>New Item</title>
+</head>
+{% endblock head %}
+
+    {% block content %}
+<body class="bg-dark text-light">
+    <main class="mt-5 pt-5">
+        <div class="container border">
+            <form action="." method="POST">{% csrf_token %}
+                <label for="title">Title: </label>
+                {{ form.title }}
+                <label for="code">Code: </label>
+                {{ form.code }}
+                <label for="price">Price: </label>
+                {{ form.price }}
+                <input class="btn btn-outline-grey btn-md" type="submit" value="Save">
+                <a class="btn btn-outline-grey btn-md" href="/items/">Cancel</a>
+            </form>
+        </div>
+    </main>
+</body>
+    {% endblock content %}
+
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+
+<html>
+{% block head %}
+<head>
+    <title>Delete Quote</title>
+</head>
+{% endblock head %}
+
+<body class="bg-dark text-light">
+    {% block content %}
+    <main class="mt-5 pt-5">
+        <div class="container border">
+            <h3>Are you sure you want to delete the Quote for {{quote.customer}}?</h3>
+            <form action="." method="POST">
+                {% csrf_token %}
+                <input class="btn btn-outline-dark" type="submit" value="Yes">
+                <a class="btn btn-outline-dark" href="/quotes/{{quote.id}}/detail/">No</a>
+            </form>
+        </div>
+    </main>
+    {% endblock content %}
+</body>
+
+</html>

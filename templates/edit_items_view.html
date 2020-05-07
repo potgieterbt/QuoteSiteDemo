@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+<html>
+{% load static %}
+<link rel="stylesheet" href="{% static 'bootstrap.css' %}">
+<link rel="stylesheet" href="{% static 'style.css' %}">
+{% block head %}
+<head>
+    <title>Edit View</title>
+</head>
+{% endblock head %}
+
+    {% block content %}
+<body class="bg-dark text-light">
+    <main class="mt-5 pt-5">
+        <div class="container">
+            <div class="text-right">
+                <a class="btn btn-outline-light btn-md" href="/items/">Save</a>
+                <a class="btn btn-outline-light btn-md" href="/items/">Cancel</a>
+            </div>
+            <table class="table table-striped table-dark">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Title</th>
+                        <th scope="col">Code</th>
+                        <th scope="col">Price</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                {% for item in items %}
+                <!--Grid column-->
+                <div class="col-lg-2 col-xl-12 ml-xl-3 mb-3">
+                    <tbody>
+                        <tr>
+                            <td>{{ item.title }}</td>
+                            <td>{{ item.code }}</td>
+                            <td>R{{ item.price }}</td>
+                            <td><a href="/items/{{ item.code }}/edit/"><i class="fas fa-pen ml-2"></i></a></td>
+                            <td><a href="/items/{{ item.code }}/delete/"><i class="fas fa-times"></i></a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </div>
+            </table>
+        </div>
+    </main>
+</body>
+    {% endblock content %}
+
+</html>

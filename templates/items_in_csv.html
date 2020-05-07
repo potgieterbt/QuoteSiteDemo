@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+<html>
+{% block head %}
+
+<head>
+    <title>CSV Upload</title>
+</head>
+{% endblock head %}
+
+{% block content %}
+
+<body class="bg-dark text-light">
+    <main class="mt-5 pt-5">
+        <div class="container">
+            <h2>{{ items_len }} Items Where Added In The CSV File</h2>
+            <h4>{{ new_rows }} Items Were Added</h4>
+            <h4>{{ changed_rows }} Items Were Changed</h4>
+            <h4>{{ same_rows }} Items Stayed The Same</h4>
+            <h2><strong>These Are The Items That Will Be Added/Changed</strong></h2>
+            <div class="text-right">
+                <form action="/items/upload/" method="post">{% csrf_token %}
+                    <input type="hidden" name="csv" id="csv" value="{{ csv }}">
+                    <input class="btn btn-outline-light" type="submit" value="Save">
+                    <a class="btn btn-outline-light" href="/items/">Cancel</a>
+                </form>
+            </div>
+            <section class="pt-5">
+                <div class="wow fadeIn text-white">
+                    <table class="table table-striped table-dark">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Code</th>
+                                <th>Price</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in items %}
+                            <tr>
+                                <td>{{ item.title }}</td>
+                                <td>{{ item.code }}</td>
+                                <td>R{{ item.price }}</td>
+                                <td>{{ item.status }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </main>
+</body>
+{% endblock content %}
+
+</html>
