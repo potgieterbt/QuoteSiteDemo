@@ -1,5 +1,4 @@
 import os
-import django_heroku
 
 ENVIRONMENT = os.getenv('ENVIRONMENT', 'development')
 
