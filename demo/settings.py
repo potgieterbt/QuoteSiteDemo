@@ -64,10 +64,15 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-DEBUG = config('DEBUG', default=False, cast=bool)
 DATABASES = {
-    "default": dj_database_url.config(default=config("postgres://dkyvdeffveaxem:7d7428086ae32b14c351fdf96e23ceb5545665e37f83a593f830684faf73bc98@ec2-50-17-90-177.compute-1.amazonaws.com:5432/d62bf3qimu1m4t"))
-
+    "default": {
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "NAME": "d62bf3qimu1m4t",
+        "USER": "dkyvdeffveaxem",
+        "PASSWORD": "7d7428086ae32b14c351fdf96e23ceb5545665e37f83a593f830684faf73bc98",
+        "HOST": "ec2-50-17-90-177.compute-1.amazonaws.com",
+        "PORT": "5432"
+    }
 }
 
 if ENVIRONMENT == 'production':
