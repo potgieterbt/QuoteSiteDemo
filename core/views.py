@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Item, Quote, QuoteItem
 from django.views.generic import View
-from . import forms
+from .forms import ItemForm, QuoteForm
 from django.core.mail import EmailMessage
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required, permission_required
@@ -22,9 +22,18 @@ def Home(request):
 
 @login_required(login_url='/accounts/login/')
 def QuoteView(request):
-    context = {
-        'quotes': Quote.objects.all(),
-    }
+    sort_by = request.GET.get('order_by')
+    context = {}
+    quotes = Quote.objects.all()
+    context['quotes'] = quotes
+    if sort_by:
+        context['sort_by'] = sort_by
+        quotes = quotes.order_by(sort_by)
+
+        context['quotes'] = quotes
+    for quote in Quote.objects.all():
+        quote.total_price = quote.get_total()
+        quote.save()
     template_name = "quotes.html"
     return render(request, 'quotes.html', context)
 
@@ -33,13 +42,23 @@ def QuoteView(request):
 def NewQuote(request):
     tablehead = ['Title', 'Code', 'Price']
     if request.method == 'POST':
-        form = forms.QuoteForm(request.POST)
+        user = request.POST.get('user')
+        customer = request.POST.get('customer')
+        address = request.POST.get('address')
+        # user = request.POST
+        # user = request.POST
+        user_id = request.user.id
+        _mutable = request.POST._mutable
+        request.POST._mutable = True
+        request.POST['user'] = user_id
+        request.POST._mutable = _mutable
+        form = QuoteForm(request.POST)
         if form.is_valid():
             form.save()
             id = Quote.objects.last()
             return redirect('/quotes/%s/add/' % id)
         else:
-            form = forms.QuoteForm()
+            form = QuoteForm()
             context = {
                 'tablehead': tablehead,
                 'form': form,
@@ -49,10 +68,18 @@ def NewQuote(request):
     else:
         context = {
             'tablehead': tablehead,
-            'form': forms.QuoteForm,
+            'form': QuoteForm,
             'user': request.user,
         }
         return render(request, 'new_quote.html', context)
+
+
+def ChangedInstalled(request, id):
+    if request.method == 'POST':
+        quote = Quote.objects.get(pk=id)
+        quote.installed = True
+        quote.save()
+        return redirect('/quotes/%s/detail/' % id)
 
 
 def AddItems(request, id):
@@ -62,6 +89,11 @@ def AddItems(request, id):
         i_id = request.POST.get('item_code')
         item = get_object_or_404(Item, pk=i_id)
         quantity = request.POST.get('quantity')
+        try:
+            quantity = int(quantity)
+        except ValueError:
+            return redirect('/quotes/%s/add/' % id)
+        print(quantity)
         if quantity == '':
             quantity = 1
         if QuoteItem.objects.filter(item=item, quote_id=id).exists():
@@ -73,10 +105,14 @@ def AddItems(request, id):
             print(type(int(quantity)))
             print(type(quote_item.quantity))
             quote_item.quantity += int(quantity)
+            quote.total_price = quote.get_total()
+            quote.save()
             quote_item.save()
             return redirect('/quotes/%s/add/' % id)
         else:
             quote.item.add(quote_item)
+            quote.total_price = quote.get_total()
+            quote.save()
             return redirect('/quotes/%s/add/' % id)
     context = {
         'tablehead': tablehead,
@@ -114,23 +150,28 @@ def DeleteQuote(request, id):
 
 @login_required(login_url='/accounts/login/')
 def Items(request):
-    context = {
-        'items': Item.objects.all(),
-    }
+    context = {}
+    items = Item.objects.all()
+    context['items'] = items
+    sort_by = request.GET.get('order_by')
+    if sort_by:
+        context['sort_by'] = sort_by
+        items = items.order_by(sort_by)
+        context['items'] = items
     return render(request, 'items.html', context)
 
 
 @permission_required('item.change_item', raise_exception=True)
 def ItemEdit(request, code):
     item = Item.objects.get(pk=code)
-    form = forms.ItemForm(instance=item)
+    form = ItemForm(instance=item)
     if request.method == 'POST':
-        form = forms.ItemForm(request.POST, instance=item)
+        form = ItemForm(request.POST, instance=item)
         if form.is_valid():
             form.save()
             return redirect('/items')
         else:
-            form = form = forms.ItemForm(instance=item)
+            form = form = ItemForm(instance=item)
     else:
         context = {
             'form': form
@@ -151,13 +192,13 @@ def EditItemView(request):
 
 def NewItem(request):
     if request.method == 'POST':
-        form = forms.ItemForm(request.POST)
+        form = ItemForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('/items')
         else:
-            form = forms.ItemForm()
-    form = forms.ItemForm()
+            form = ItemForm()
+    form = ItemForm()
     context = {
         'form': form
     }
@@ -189,14 +230,14 @@ def CSVUpload(request):
             if Item.objects.filter(title=fields[0], code=fields[1], price=fields[2]).exists():
                 item = Item.objects.get(
                     title=fields[0], code=fields[1], price=fields[2])
-                form = forms.ItemForm(data_dict, instance=item)
+                form = ItemForm(data_dict, instance=item)
                 if form.is_valid():
                     data_dict["status"] = 'Same'
                     same_rows += 1
                     csv_data.append(data_dict)
             elif Item.objects.filter(code=fields[1]).exists():
                 item = Item.objects.get(code=fields[1])
-                form = forms.ItemForm(data_dict, instance=item)
+                form = ItemForm(data_dict, instance=item)
                 if form.is_valid():
                     data_dict["status"] = 'Changed'
                     changed_rows += 1
@@ -205,7 +246,7 @@ def CSVUpload(request):
                 else:
                     pass
             else:
-                form = forms.ItemForm(data_dict)
+                form = ItemForm(data_dict)
                 if form.is_valid():
                     data_dict["status"] = 'New'
                     new_rows += 1
@@ -246,14 +287,14 @@ def AddItemCSV(request):
                     pass
                 elif Item.objects.filter(code=fields[1]).exists():
                     item = Item.objects.get(code=fields[1])
-                    form = forms.ItemForm(data_dict, instance=item)
+                    form = ItemForm(data_dict, instance=item)
                     if form.is_valid():
                         form.save()
                         print('Item Saved')
                     else:
                         pass
                 else:
-                    form = forms.ItemForm(data_dict)
+                    form = ItemForm(data_dict)
                     if form.is_valid():
                         form.save()
                         print('Item Saved')
@@ -291,7 +332,7 @@ def QuoteDetail(request, id):
     return render(request, 'quote_detail.html', context)
 
 
-def Search(request):
+def ItemSearch(request):
     context = {}
     queryset = []
     q = request.GET.get('q')
@@ -310,4 +351,27 @@ def Search(request):
         context['sort_by'] = sort_by
         items = items.order_by(sort_by)
         context['items'] = items
-    return render(request, 'search.html', context)
+    return render(request, 'item_search.html', context)
+
+
+def QuoteSearch(request):
+    context = {}
+    queryset = []
+    q = request.GET.get('q')
+    sort_by = request.GET.get('order_by')
+    if q:
+        context['query'] = q
+        quotes = Quote.objects.filter(
+            Q(customer__icontains=q) |
+            Q(made_date__icontains=q) |
+            Q(address__icontains=q)
+        ).distinct()
+        context['quotes'] = quotes
+    else:
+        quotes = Quote.objects.all()
+        context['quotes'] = quotes
+    if sort_by:
+        context['sort_by'] = sort_by
+        quotes = quotes.order_by(sort_by)
+        context['quotes'] = quotes
+    return render(request, 'quote_search.html', context)

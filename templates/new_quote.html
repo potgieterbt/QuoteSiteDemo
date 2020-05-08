@@ -2,22 +2,30 @@
 <html>
 {% extends 'base.html' %}
 {% block head %}
+
 <head>
     <title>New Quote</title>
 </head>
 {% endblock head %}
 
-    {% block content %}
+{% block content %}
+
 <body class="bg-dark text-light">
     <main class="mt-5 pt-5">
         <div class="container border">
             <form action="." method="POST">{% csrf_token %}
-                {{ form }}
-                <input class="btn btn-outline-grey btn-lg waves-effect waves-light" type="submit">
+                <label for="user">Employee: </label>
+                <input type="text" name="user" id="user" value="{{ user }}" readonly>
+                {{ form.user.as_hidden }}
+                <label for="customer">Customer: </label>
+                {{ form.customer }}
+                <label for="address">Address: </label>
+                {{ form.address }}
+                <input class="btn btn-outline-light btn-lg waves-effect waves-light" type="submit">
             </form>
         </div>
     </main>
 </body>
-    {% endblock content %}
+{% endblock content %}
 
 </html>

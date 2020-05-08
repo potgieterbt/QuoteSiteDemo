@@ -13,6 +13,9 @@ urlpatterns = [
     path('quotes/<id>/remove/', views.DeleteQuote, name='delete quote'),
     path('quotes/<id>/email/', views.SendPDFEmail, name='Send Email'),
     path('quotes/<id>/detail/', views.QuoteDetail, name='Quote_Detail'),
+    path('quotes/<id>/detail/installed/',
+         views.ChangedInstalled, name="install change"),
+    path('quotes/search/', views.QuoteSearch, name="search"),
 
     path('items/', views.Items, name='items'),
     path('items/new/', views.NewItem, name='new item'),
@@ -21,8 +24,7 @@ urlpatterns = [
     path('items/<code>/remove/', views.ItemDelete, name='delete item'),
     path('items/upload/', views.AddItemCSV, name='Upload csv'),
     path('items/csvcheck/', views.CSVUpload, name='csv upload'),
-
-    path('search/', views.Search, name="search"),
+    path('items/search/', views.ItemSearch, name="search"),
 
     path('accounts/profile/', views.UserProfile, name='profile'),
 ]

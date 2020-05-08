@@ -11,14 +11,40 @@
 <body class="bg-dark text-white">
     <main class="mt-5 pt-5">
         <div class="container">
-            <label for="{{quote.customer}}">Customer: </label>
-            <input class="" type="text" value="{{ quote.customer }}" readonly>
-            <label for="{{quote.address}}">Address: </label>
-            <input type="text" value="{{ quote.address }}" readonly>
-            <label for="{{quote.user}}">Employee: </label>
-            <input type="text" value="{{ quote.user }}" readonly>
-            <label for="{{quote.made_date}}">Date <i class="fas fa-calendar-day"></i>: </label>
-            <input type="text" value="{{ quote.made_date }}" readonly>
+            <div class="row">
+                <div class="col">
+                    <h3>
+                        <label for="customer">Customer: </label>
+                        <strong>{{ quote.customer }}</strong> </h3>
+                </div>
+                <div class="col">
+                    <h3>
+                        <label for="user">Employee: </label>
+                        <strong>{{ quote.user }}</strong> </h3>
+                </div>
+                <div class="col">
+                    <h3>
+                        <label for="address">Address: </label>
+                        <strong>{{ quote.address }}</strong> </h3>
+                </div>
+                <div class="col">
+                    <h3>
+                        <label for="made_date">Date: </label>
+                        <strong>{{ quote.made_date }}</strong> </h3>
+                </div>
+            </div>
+            <div class="">
+                <form class="col-md-7 offset-md-5 text-right" action="installed/" method="POST">{% csrf_token %}
+                    <label for="installed">
+                        <h3><strong>Installed: {{ quote.installed }}</strong></h3>
+                    </label>
+                    {% if quote.installed == False %}
+                    <div>
+                        <input class="btn btn-outline-light" type="submit" value="Installed">
+                    </div>
+                    {% endif %}
+                </form>
+            </div>
             <div>
                 <label for="{{item}}">
                     <h3> Items: </h3>
@@ -54,7 +80,7 @@
                             <td></td>
                             <td></td>
                             <td>Total Price:</td>
-                            <td>R{{ quote.get_total }}</td>
+                            <td>R{{ quote.total_price }}</td>
                         </tr>
                     </tbody>
                 </table>

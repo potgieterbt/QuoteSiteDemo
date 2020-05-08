@@ -2,9 +2,9 @@ import os
 
 ENVIRONMENT = os.getenv('ENVIRONMENT', 'development')
 
-DEBUG = False
+DEBUG = True
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = '888ba62bd9957a8a0f7748196bdc1004c5bd619bc1852b1cad8601ac110c'
 ALLOWED_HOSTS = ['easy-quote-demo.herokuapp.com', '127.0.0.1']
 
 INSTALLED_APPS = [
@@ -22,8 +22,8 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'django.middleware.security.SecurityMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -63,10 +63,12 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static_files')]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 DATABASES = {
     "default": {
+        # "ENGINE": "django.db.backends.sqlite3",
+        # "NAME": "db.sqlite3",
         "ENGINE": "django.db.backends.postgresql_psycopg2",
         "NAME": "d62bf3qimu1m4t",
         "USER": "dkyvdeffveaxem",

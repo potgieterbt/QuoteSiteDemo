@@ -9,6 +9,7 @@ class QuoteForm(forms.ModelForm):
 
     class Meta:
         model = Quote
+        user = {'tag': forms.HiddenInput()}
         fields = [
             'user',
             'customer',

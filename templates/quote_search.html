@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+
+{% block head %}
+<title>Search</title>
+{% endblock head %}
+
+<html>
+{% block content %}
+
+<body class="bg-dark">
+    <main class="mt-5 pt-5">
+        <div class="container">
+            <div class="rounded pt-3 grey pb-3 mb-5">
+                <div class="text-right">
+                    <form class="offset-md-3 col-md-5" action="/quotes/search/">
+                        <input class="form-control" type="text" name="q" id="q" value="{{ query }}">
+                        <input class="btn rounded btn-outline-dark" type="submit" value="Search">
+                    </form>
+                </div>
+            </div>
+            <table class="table table-striped table-dark">
+                <thead class="thead-dark">
+                    <tr>
+                        <th class="">
+                            {% if sort_by == 'customer' %}
+                            <a class="text-white" href="?q={{query}}&order_by=-customer">Customer
+                                <i class="fas fa-sort-up"></i></a>
+                            {% else %}
+                            <a class="text-white" href="?q={{query}}&order_by=customer">Customer
+                                <i class="fas fa-sort-down"></i></a>
+                            {% endif %}
+                        </th>
+                        <th class="">
+                            {% if sort_by == 'address' %}
+                            <a class="text-white" href="?q={{query}}&order_by=-address">Address
+                                <i class="fas fa-sort-up"></i></a>
+                            {% else %}
+                            <a class="text-white" href="?q={{query}}&order_by=address">Address
+                                <i class="fas fa-sort-down"></i></a>
+                            {% endif %}
+                            </a></th>
+                        <th class="">
+                            {% if sort_by == 'made_date' %}
+                            <a class="text-white" href="?q={{query}}&order_by=-made_date">Date
+                                <i class="fas fa-sort-up"></i></a>
+                            {% else %}
+                            <a class="text-white" href="?q={{query}}&order_by=made_date">Date
+                                <i class="fas fa-sort-down"></i></a>
+                            {% endif %}
+                        </th>
+                        <th>
+                            {% if sort_by == 'installed' %}
+                            <a class="text-white" href="?q={{query}}&order_by=-installed">Installed
+                                <i class="fas fa-sort-up"></i></a>
+                            {% else %}
+                            <a class="text-white" href="?q={{query}}&order_by=installed">Installed
+                                <i class="fas fa-sort-down"></i></a>
+                            {% endif %}
+                        </th>
+                        <th>
+                            {% if sort_by == 'total_price' %}
+                            <a class="text-white" href="?q={{query}}&order_by=-total_price">Price
+                                <i class="fas fa-sort-up"></i></a>
+                            {% else %}
+                            <a class="text-white" href="?q={{query}}&order_by=total_price">Price
+                                <i class="fas fa-sort-down"></i></a>
+                            {% endif %}
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <!--Grid column-->
+                <div class="col-lg-2 col-xl-12 ml-xl-3 mb-3">
+                    <tbody>
+                        {% for quote in quotes %}
+                        <tr>
+                            <td>{{ quote.customer }}</td>
+                            <td>{{ quote.address }}</td>
+                            <td>{{ quote.made_date }}</td>
+                            <td>
+                                {% if quote.installed %}
+                                <i class="fas fa-check"></i>
+                                {% else %}
+                                <i class="fas fa-times"></i>
+                                {% endif %}
+                            </td>
+                            <td>R{{ quote.total_price }}</td>
+                            <td></td>
+                            <td><a href="/quotes/{{quote.id}}/detail/" class="text-white">Details <i
+                                        class="fas fa-layer-group"></i></a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </div>
+            </table>
+        </div>
+    </main>
+</body>
+{% endblock content %}
+
+</html>
