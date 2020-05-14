@@ -15,24 +15,21 @@
     <!--Main layout-->
     <main class="mt-5 pt-5">
         <div class="container">
-            <div class="rounded pt-3 grey pb-3">
-                <div class="text-right">
-                    <form class="offset-md-3 col-md-5" action="/quotes/search/">
-                        <input class="form-control" type="text" name="q" id="q">
-                        <input class="btn rounded btn-outline-dark" type="submit" value="Search">
-                    </form>
-                </div>
-            </div>
             <div class="float-right">
                 <a href="/quotes/new/" class="btn btn-outline-light btn-lg">Make New Quote
                     <i class="fas fa-pen ml-2"></i>
                 </a>
             </div>
+            <div class="input-group mt-5 pt-3 pb- col-5 rounded col-md-8 offset-md-3">
+                <input class="input-group-text col-8" type="text" name="q" id="myInput" aria-describedby="button-addon2"
+                    placeholder="Search For Quote By Customer/Address/Date..." value="{{query}}" onkeyup="myFunction()"
+                    autofocus>
+            </div>
             <!--Section: Cards-->
-            <section class="pt-5">
+            <section class="pt-3">
                 <!--Grid row-->
                 <div class="wow fadeIn text-white">
-                    <table class="table table-striped table-dark">
+                    <table id="myTable" class="table table-striped table-dark">
                         <thead class="thead-dark">
                             <tr>
                                 <th class="">
@@ -58,7 +55,7 @@
                                     <a class="text-white" href="?order_by=-made_date">Date
                                         <i class="fas fa-sort-up"></i></a>
                                     {% else %}
-                                    <a class="text-white" href="?order_by=made_date">Date
+                                    <a selected="selected" class="text-white" href="?order_by=made_date">Date
                                         <i class="fas fa-sort-down"></i></a>
                                     {% endif %}
                                 </th>
@@ -100,7 +97,7 @@
                                     </td>
                                     <td>R{{ quote.total_price }}</td>
                                     <td></td>
-                                    <td><a href="/quotes/{{quote.id}}/detail/" class="text-white">Details <i
+                                    <td><a href="/quotes/{{quote.id}}/" class="text-white">Details <i
                                                 class="fas fa-layer-group"></i></a></td>
                                 </tr>
                                 {% endfor %}
@@ -159,6 +156,7 @@
     <!--Main layout-->
 
     <!-- SCRIPTS -->
+    <script type="text/javascript" src="{% static 'js/update.js' %}"></script>
     <!-- JQuery -->
     <script type="text/javascript" src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
     <!-- Bootstrap tooltips -->

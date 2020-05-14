@@ -22,19 +22,44 @@ def Home(request):
 
 @login_required(login_url='/accounts/login/')
 def QuoteView(request):
+    context = {}
+    queryset = []
+    q = request.GET.get('q')
+    sort_by = request.GET.get('order_by')
     sort_by = request.GET.get('order_by')
     context = {}
     quotes = Quote.objects.all()
     context['quotes'] = quotes
+    if q:
+        context['query'] = q
+        quotes = Quote.objects.filter(
+            Q(customer__icontains=q) | Q(
+                made_date__icontains=q) | Q(address__icontains=q)
+        ).distinct()
+        context['quotes'] = quotes
+    else:
+        quotes = Quote.objects.all()
+        context['quotes'] = quotes
     if sort_by:
         context['sort_by'] = sort_by
         quotes = quotes.order_by(sort_by)
-
         context['quotes'] = quotes
+    else:
+        context['sort_by'] = '-made_date'
+        quotes = quotes.order_by('-made_date')
+        context['quotes'] = quotes
+    if sort_by:
+        context['sort_by'] = sort_by
+        quotes = quotes.order_by(sort_by)
+        context['quotes'] = quotes
+    else:
+        context['sort_by'] = '-made_date'
+        quotes = quotes.order_by('-made_date')
+        context['quotes'] = quotes
+
     for quote in Quote.objects.all():
         quote.total_price = quote.get_total()
         quote.save()
-    template_name = "quotes.html"
     return render(request, 'quotes.html', context)
 
 
@@ -71,6 +96,7 @@ def NewQuote(request):
             'form': QuoteForm,
             'user': request.user,
         }
+
         return render(request, 'new_quote.html', context)
 
 
@@ -79,12 +105,20 @@ def ChangedInstalled(request, id):
         quote = Quote.objects.get(pk=id)
         quote.installed = True
         quote.save()
-        return redirect('/quotes/%s/detail/' % id)
+        return redirect('/quotes/%s/' % id)
 
 
 def AddItems(request, id):
+    context = {}
+    q = request.GET.get('q')
+    sort_by = request.GET.get('order_by')
     tablehead = ['Title', 'Code', 'Price', 'Quantity']
+    items = Item.objects.all()
+    context['items'] = items
+    context['tablehead'] = tablehead
     quote = Quote.objects.get(pk=id)
+    context['quote'] = quote
+    context['quote_items'] = quote.item.all()
     if request.method == 'POST':
         i_id = request.POST.get('item_code')
         item = get_object_or_404(Item, pk=i_id)
@@ -114,11 +148,18 @@ def AddItems(request, id):
             quote.total_price = quote.get_total()
             quote.save()
             return redirect('/quotes/%s/add/' % id)
-    context = {
-        'tablehead': tablehead,
-        'quote': quote,
-        'items': Item.objects.all(),
-    }
+    if q:
+        context['query'] = q
+        items = Item.objects.filter(
+            Q(title__icontains=q) | Q(code__icontains=q)).distinct()
+        context['items'] = items
+    else:
+        items = Item.objects.all()
+        context['items'] = items
+    if sort_by:
+        context['sort_by'] = sort_by
+        items = items.order_by(sort_by)
+        context['items'] = items
     return render(request, 'quote_add_item.html', context)
 
 
@@ -153,7 +194,19 @@ def Items(request):
     context = {}
     items = Item.objects.all()
     context['items'] = items
+    context = {}
+    queryset = []
+    q = request.GET.get('q')
     sort_by = request.GET.get('order_by')
+    if q:
+        context['query'] = q
+        items = Item.objects.filter(
+            Q(title__icontains=q) | Q(code__icontains=q)
+        ).distinct()
+        context['items'] = items
+    else:
+        items = Item.objects.all()
+        context['items'] = items
     if sort_by:
         context['sort_by'] = sort_by
         items = items.order_by(sort_by)
@@ -335,13 +388,17 @@ def QuoteDetail(request, id):
 def ItemSearch(request):
     context = {}
     queryset = []
+    search_terms = []
+    for item in Item.objects.all():
+        search_terms.append(item.title)
+        search_terms.append(item.code)
+    context['search_terms'] = search_terms
     q = request.GET.get('q')
     sort_by = request.GET.get('order_by')
     if q:
         context['query'] = q
         items = Item.objects.filter(
-            Q(title__icontains=q) |
-            Q(code__icontains=q)
+            Q(title__icontains=q) | Q(code__icontains=q)
         ).distinct()
         context['items'] = items
     else:
@@ -362,9 +419,8 @@ def QuoteSearch(request):
     if q:
         context['query'] = q
         quotes = Quote.objects.filter(
-            Q(customer__icontains=q) |
-            Q(made_date__icontains=q) |
-            Q(address__icontains=q)
+            Q(customer__icontains=q) | Q(
+                made_date__icontains=q) | Q(address__icontains=q)
         ).distinct()
         context['quotes'] = quotes
     else:
@@ -373,5 +429,9 @@ def QuoteSearch(request):
     if sort_by:
         context['sort_by'] = sort_by
         quotes = quotes.order_by(sort_by)
+        context['quotes'] = quotes
+    else:
+        context['sort_by'] = '-made_date'
+        quotes = quotes.order_by('-made_date')
         context['quotes'] = quotes
     return render(request, 'quote_search.html', context)

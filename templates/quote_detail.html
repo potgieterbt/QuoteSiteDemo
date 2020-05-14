@@ -11,45 +11,54 @@
 <body class="bg-dark text-white">
     <main class="mt-5 pt-5">
         <div class="container">
+            <div class="row mb-3">
+                <div class="col">
+                    <h4>
+                        <label for="customer">Customer: </label>
+                        <strong>{{ quote.customer }}</strong>
+                    </h4>
+                </div>
+                <div class="col">
+                    <h4>
+                        <label for="user">Employee: </label>
+                        <strong>{{ quote.user }}</strong>
+                    </h4>
+                </div>
+                <div class="col">
+                    <h4>
+                        <label for="address">Address: </label>
+                        <strong>{{ quote.address }}</strong>
+                    </h4>
+                </div>
+            </div>
+            <div class="row mb-5">
+                <div class="col">
+                    <h4>
+                        <label for="made_date">Date: </label>
+                        <strong>{{ quote.made_date }}</strong>
+                    </h4>
+                </div>
+                <div class="col-4"></div>
+                <div class="col">
+                    <form class="" action="installed/" method="POST">{% csrf_token %}
+                        <label for="installed">
+                            <h4><strong>Installed: {{ quote.installed }}</strong></h4>
+                        </label>
+                        {% if quote.installed == False %}
+                        <div>
+                            <input class="btn btn-outline-light" type="submit" value="Installed">
+                        </div>
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
             <div class="row">
                 <div class="col">
-                    <h3>
-                        <label for="customer">Customer: </label>
-                        <strong>{{ quote.customer }}</strong> </h3>
-                </div>
-                <div class="col">
-                    <h3>
-                        <label for="user">Employee: </label>
-                        <strong>{{ quote.user }}</strong> </h3>
-                </div>
-                <div class="col">
-                    <h3>
-                        <label for="address">Address: </label>
-                        <strong>{{ quote.address }}</strong> </h3>
-                </div>
-                <div class="col">
-                    <h3>
-                        <label for="made_date">Date: </label>
-                        <strong>{{ quote.made_date }}</strong> </h3>
-                </div>
-            </div>
-            <div class="">
-                <form class="col-md-7 offset-md-5 text-right" action="installed/" method="POST">{% csrf_token %}
-                    <label for="installed">
-                        <h3><strong>Installed: {{ quote.installed }}</strong></h3>
+                    <label for="{{item}}">
+                        <h3> Items: </h3>
                     </label>
-                    {% if quote.installed == False %}
-                    <div>
-                        <input class="btn btn-outline-light" type="submit" value="Installed">
-                    </div>
-                    {% endif %}
-                </form>
-            </div>
-            <div>
-                <label for="{{item}}">
-                    <h3> Items: </h3>
-                </label>
-                <div class="text-right">
+                </div>
+                <div class="float-right">
                     <!-- <a class="btn btn-outline-dark" href="/quotes/{{ quote.id }}/email/">Email Quote</a> -->
                     {% if perms.quote.delete_quote %}
                     <a class="btn btn-outline-light" href="/quotes/{{quote.id}}/remove">Delete Quote</a>

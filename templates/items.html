@@ -16,72 +16,92 @@
 <body class="bg-dark text-light">
     <main class="mt-5 pt-5">
         <div class="container">
-            <div class="rounded pt-3 grey pb-2 mb-3">
-                <div class="text-right">
-                    <form class="offset-md-3 col-md-5" action="/items/search/">
-                        <input class="form-control" type="text" name="q" id="q">
-                        <input class="btn rounded btn-outline-dark" type="submit" value="Search">
+            <div>
+                <div class="pb-3">
+                    <form class="form-control-file" action="csvcheck/" enctype="multipart/form-data" method="POST">
+                        {% csrf_token %}
+                        <div class="custom-file col-4">
+                            <label class="custom-file-label" for="validatedCustomFile">Select A File To
+                                Upload...</label>
+                            <input class="custom-file-input" type="file" id="fileupload" accept=".csv" name="myfile"
+                                id="validatedCustomFile" onchange="alertFilename()" required>
+                            <input class="btn btn-outline-light rounded float-right" type="submit" value="Upload CSV">
+                            <div class="invalid-feedback">Example invalid custom file feedback</div>
+
+                        </div>
                     </form>
                 </div>
-            </div>
-            <div>
-                <form class="form-control-file" action="csvcheck/" enctype="multipart/form-data" method="POST">
-                    {% csrf_token %}
-                    <input class="btn-outline-light" type="file" id="fileupload" accept=".csv" name="myfile"
-                        id="csv_file" required>
-                    <input class="btn btn-outline-light" type="submit" value="Upload CSV">
-                </form>
-                <div class="text-right">
-                    <a class="btn btn-outline-light btn-md waves-effect waves-light" href="new/">New Item</a>
-                    <a class="btn btn-outline-light btn-md waves-effect waves-light" href="edit/">Edit</a>
-                </div>
-                <table class="table table-striped table-dark">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th class="">
-                                {% if sort_by == 'title' %}
-                                <a class="text-white" href="?order_by=-title">Title
-                                    <i class="fas fa-sort-down"></i></a>
-                                {% else %}
-                                <a class="text-white" href="?order_by=title">Title
-                                    <i class="fas fa-sort-up"></i></a>
-                                {% endif %}
-                            </th>
-                            <th class="">
-                                {% if sort_by == 'code' %}
-                                <a class="text-white" href="?order_by=-code">Code
-                                    <i class="fas fa-sort-down"></i></a>
-                                {% else %}
-                                <a class="text-white" href="?order_by=code">Code
-                                    <i class="fas fa-sort-up"></i></a>
-                                {% endif %}
-                                </a></th>
-                            <th class="">
-                                {% if sort_by == 'price' %}
-                                <a class="text-white" href="?order_by=-price">Price
-                                    <i class="fas fa-sort-down"></i></a>
-                                {% else %}
-                                <a class="text-white" href="?order_by=price">Price
-                                    <i class="fas fa-sort-up"></i></a>
-                                {% endif %}
-                            </th>
-                        </tr>
-                    </thead>
-                    {% for item in items %}
-                    <!--Grid column-->
-                    <div class="col-lg-2 col-xl-12 ml-xl-3 mb-3">
-                        <tbody>
-                            <tr>
-                                <td>{{ item.title }}</td>
-                                <td>{{ item.code }}</td>
-                                <td>R{{ item.price }}</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
+                <div>
+                    <div class="float-right">
+                        <a class="btn btn-outline-light rounded waves-effect waves-light" href="new/">New Item</a>
+                        <a class="btn btn-outline-light rounded waves-effect waves-light" href="edit/">Edit</a>
                     </div>
-                </table>
+                    <div class="input-group mt-5 pt-3 pb- col-5 rounded col-md-8 offset-md-3">
+                        <input class="input-group-text table-filter-input col-8" type="text" name="q" id="myInput"
+                            aria-describedby="button-addon2" placeholder="Search For Item By Title/Code..."
+                            value="{{query}}" onkeyup="myFunction()" autofocus>
+                    </div>
+                </div>
+                <section class="pt-3">
+                    <div class="wow fadeIn text-white">
+                        <table class="pt-3 table table-striped table-dark" id="myTable">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th class="">
+                                        {% if sort_by == 'title' %}
+                                        <a class="text-white" href="?order_by=-title">Title
+                                            <i class="fas fa-sort-down"></i></a>
+                                        {% else %}
+                                        <a class="text-white" href="?order_by=title">Title
+                                            <i class="fas fa-sort-up"></i></a>
+                                        {% endif %}
+                                    </th>
+                                    <th class="">
+                                        {% if sort_by == 'code' %}
+                                        <a class="text-white" href="?order_by=-code">Code
+                                            <i class="fas fa-sort-down"></i></a>
+                                        {% else %}
+                                        <a class="text-white" href="?order_by=code">Code
+                                            <i class="fas fa-sort-up"></i></a>
+                                        {% endif %}
+                                        </a></th>
+                                    <th class="">
+                                        {% if sort_by == 'price' %}
+                                        <a class="text-white" href="?order_by=-price">Price
+                                            <i class="fas fa-sort-down"></i></a>
+                                        {% else %}
+                                        <a class="text-white" href="?order_by=price">Price
+                                            <i class="fas fa-sort-up"></i></a>
+                                        {% endif %}
+                                    </th>
+                                </tr>
+                            </thead>
+                            {% for item in items %}
+                            <!--Grid column-->
+                            <div class="col-lg-2 col-xl-12 ml-xl-3 mb-3">
+                                <tbody>
+                                    <tr>
+                                        <td>{{ item.title }}</td>
+                                        <td>{{ item.code }}</td>
+                                        <td>R{{ item.price }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </div>
+                        </table>
+                    </div>
+                </section>
             </div>
+        </div>
     </main>
+    <script type="text/javascript">
+        function alertFilename() {
+            var thefile = document.getElementsByClassName('custom-file-input');
+            var label1 = document.getElementsByClassName('custom-file-label')
+            label1[0].textContent = thefile[0].files.item(0).name
+        }
+    </script>
+    <script type="text/javascript" src="{% static 'js/update.js' %}"></script>
 </body>
 {% endblock content %}
 
