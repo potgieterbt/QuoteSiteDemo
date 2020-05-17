@@ -2,9 +2,9 @@ import os
 
 ENVIRONMENT = os.getenv('ENVIRONMENT', 'development')
 
-DEBUG = config('DEBUG')
+DEBUG = os.environ.get('DEBUG')
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SECRET_KEY = config('SECRET_KEY')
+SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECRET_KEY = '888ba62bd9957a8a0f7748196bdc1004c5bd619bc1852b1cad8601ac110c'
 ALLOWED_HOSTS = ['easy-quote-demo.herokuapp.com', '127.0.0.1']
 
