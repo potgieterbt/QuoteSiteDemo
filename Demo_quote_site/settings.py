@@ -2,10 +2,11 @@ import os
 
 ENVIRONMENT = os.getenv('ENVIRONMENT', 'development')
 
-DEBUG = os.environ.get('DEBUG')
+DEBUG = True
+# DEBUG = os.environ.get('DEBUG')
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SECRET_KEY = os.environ.get('SECRET_KEY')
-# SECRET_KEY = '888ba62bd9957a8a0f7748196bdc1004c5bd619bc1852b1cad8601ac110c'
+# SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = '888ba62bd9957a8a0f7748196bdc1004c5bd619bc1852b1cad8601ac110c'
 ALLOWED_HOSTS = ['easy-quote-demo.herokuapp.com', '127.0.0.1']
 
 INSTALLED_APPS = [
@@ -68,14 +69,14 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 DATABASES = {
     "default": {
-        # "ENGINE": "django.db.backends.sqlite3",
-        # "NAME": "db.sqlite3",
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": "d62bf3qimu1m4t",
-        "USER": "dkyvdeffveaxem",
-        "PASSWORD": "7d7428086ae32b14c351fdf96e23ceb5545665e37f83a593f830684faf73bc98",
-        "HOST": "ec2-50-17-90-177.compute-1.amazonaws.com",
-        "PORT": "5432"
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": "db.sqlite3",
+        # "ENGINE": "django.db.backends.postgresql_psycopg2",
+        # "NAME": "d62bf3qimu1m4t",
+        # "USER": "dkyvdeffveaxem",
+        # "PASSWORD": "7d7428086ae32b14c351fdf96e23ceb5545665e37f83a593f830684faf73bc98",
+        # "HOST": "ec2-50-17-90-177.compute-1.amazonaws.com",
+        # "PORT": "5432"
     }
 }
 

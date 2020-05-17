@@ -36,7 +36,7 @@ class Quote(models.Model):
     address = models.CharField(max_length=500)
     installed = models.BooleanField(default=False)
     total_price = models.FloatField(blank=True, null=True)
-    notes = models.CharField(max_length=2000, null=True)
+    notes = models.CharField(max_length=2000)
 
     def get_total(self):
         total = 0

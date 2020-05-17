@@ -6,6 +6,7 @@ from django.conf import settings
 class QuoteForm(forms.ModelForm):
     customer = forms.CharField(max_length=200)
     address = forms.CharField(max_length=500)
+    notes = forms.CharField(max_length=2000)
 
     class Meta:
         model = Quote
@@ -14,6 +15,7 @@ class QuoteForm(forms.ModelForm):
             'user',
             'customer',
             'address',
+            'notes',
         ]
 
 
