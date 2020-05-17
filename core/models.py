@@ -7,9 +7,10 @@ class Item(models.Model):
     title = models.CharField(max_length=200)
     code = models.IntegerField(primary_key=True)
     price = models.FloatField()
+    notes = models.CharField(max_length=2000)
 
     def __str__(self):
-        template = '{0.title} {0.code} {0.price}'
+        template = '{0.title} {0.code} {0.price} {0.notes}'
         return template.format(self)
 
 
@@ -35,6 +36,7 @@ class Quote(models.Model):
     address = models.CharField(max_length=500)
     installed = models.BooleanField(default=False)
     total_price = models.FloatField(blank=True, null=True)
+    notes = models.CharField(max_length=2000, null=True)
 
     def get_total(self):
         total = 0

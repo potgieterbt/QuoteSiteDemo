@@ -21,6 +21,7 @@ class ItemForm(forms.ModelForm):
     title = forms.CharField(max_length=200)
     code = forms.IntegerField()
     price = forms.FloatField()
+    notes = forms.CharField(max_length=2000, required=False)
 
     class Meta:
         model = Item
@@ -28,4 +29,5 @@ class ItemForm(forms.ModelForm):
             'title',
             'code',
             'price',
+            'notes',
         ]

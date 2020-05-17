@@ -16,16 +16,26 @@
 <body class="bg-dark text-light">
     <main class="mt-5 pt-5">
         <div class="container border text-light">
-            <form action="." method="POST">{% csrf_token %}
-                <label for="title">Title: </label>
-                {{ form.title }}
-                <label for="code">Code: </label>
-                {{ form.code }}
-                <label for="price">Price: </label>
-                {{ form.price }}
-                <input class="btn btn-outline-light btn-md" type="submit" value="Save">
-                <a class="btn btn-outline-light btn-md" href="/items/edit/">Cancel</a>
-            </form>
+            <div class="row pl-3 pt-3 pr-3 pb-3">
+                <form action="." method="POST">{% csrf_token %}
+                    {{ form }}
+                    <!-- <label class="pl-3" for="title">Title: </label>
+                    {{ form.title }}
+                    <label class="pl-3" for="code">Code: </label>
+                    {{ form.code }}
+                    <label class="pl-3" for="price">Price: </label>
+                    {{ form.price }}
+                    <label class="pl-3" for="notes">Notes: </label>
+                    {{ form.notes }} -->
+                    <!-- <textarea class="text-dark" name="notes" id="notes" cols="30" rows="5"
+                            placeholder="Add Notes For Item Here...">{{form.notes.value}}</textarea> -->
+                    <div class="text-right">
+                        <input class="btn btn-outline-light btn" type="submit" value="Save">
+                        <a class="btn btn-outline-light btn" href="/items/edit/">Cancel</a>
+                    </div>
+
+                </form>
+            </div>
         </div>
     </main>
 </body>

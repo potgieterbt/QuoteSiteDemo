@@ -5,28 +5,40 @@
 <link rel="stylesheet" href="{% static 'bootstrap.css' %}">
 <link rel="stylesheet" href="{% static 'style.css' %}">
 {% block head %}
+
 <head>
     <title>New Item</title>
 </head>
 {% endblock head %}
 
-    {% block content %}
+{% block content %}
+
 <body class="bg-dark text-light">
     <main class="mt-5 pt-5">
         <div class="container border">
-            <form action="." method="POST">{% csrf_token %}
-                <label for="title">Title: </label>
-                {{ form.title }}
-                <label for="code">Code: </label>
-                {{ form.code }}
-                <label for="price">Price: </label>
-                {{ form.price }}
-                <input class="btn btn-outline-grey btn-md" type="submit" value="Save">
-                <a class="btn btn-outline-grey btn-md" href="/items/">Cancel</a>
-            </form>
+            <div class="row pl-3 pt-3 pr-3 pb-3">
+                <form action="." method="POST">{% csrf_token %}
+                    <label for="title">Title: </label>
+                    {{ form.title }}
+                    <label for="code">Code: </label>
+                    {{ form.code }}
+                    <label for="price">Price: </label>
+                    {{ form.price }}
+                    <label for="notes">Notes: </label>
+                    {{ form.notes }}
+                    <div class="float-right pr-5 ml-5">
+                        <!-- <textarea class="text-dark" name="notes" id="notes" cols="30" rows="5"
+                            placeholder="Add Notes For Item Here..."></textarea> -->
+                        <div class="text-right">
+                            <input class="btn btn-outline-light btn-md" type="submit" value="Save">
+                            <a class="btn btn-outline-light btn-md" href="/items/">Cancel</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
     </main>
 </body>
-    {% endblock content %}
+{% endblock content %}
 
 </html>

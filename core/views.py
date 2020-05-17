@@ -218,8 +218,10 @@ def Items(request):
 def ItemEdit(request, code):
     item = Item.objects.get(pk=code)
     form = ItemForm(instance=item)
+    print(form)
     if request.method == 'POST':
         form = ItemForm(request.POST, instance=item)
+        print(form)
         if form.is_valid():
             form.save()
             return redirect('/items')
@@ -244,14 +246,15 @@ def EditItemView(request):
 
 
 def NewItem(request):
+    form = ItemForm()
     if request.method == 'POST':
         form = ItemForm(request.POST)
+        print(form)
         if form.is_valid():
             form.save()
             return redirect('/items')
         else:
             form = ItemForm()
-    form = ItemForm()
     context = {
         'form': form
     }

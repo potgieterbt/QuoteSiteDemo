@@ -36,10 +36,11 @@
                         <a class="btn btn-outline-light rounded waves-effect waves-light" href="new/">New Item</a>
                         <a class="btn btn-outline-light rounded waves-effect waves-light" href="edit/">Edit</a>
                     </div>
-                    <div class="input-group mt-5 pt-3 pb- col-5 rounded col-md-8 offset-md-3">
-                        <input class="input-group-text table-filter-input col-8" type="text" name="q" id="myInput"
-                            aria-describedby="button-addon2" placeholder="Search For Item By Title/Code..."
-                            value="{{query}}" onkeyup="myFunction()" autofocus>
+                    <div class="mt-5 pt-3 rounded">
+                        <input class="col-md-5 offset-md-3 input-group-text table-filter-input col-8" type="text"
+                            name="q" id="myInput" aria-describedby="button-addon2"
+                            placeholder="Search For Item By Title/Code..." value="{{query}}" onkeyup="myFunction()"
+                            autofocus>
                     </div>
                 </div>
                 <section class="pt-3">
@@ -74,6 +75,7 @@
                                             <i class="fas fa-sort-up"></i></a>
                                         {% endif %}
                                     </th>
+                                    <th>Notes</th>
                                 </tr>
                             </thead>
                             {% for item in items %}
@@ -84,6 +86,7 @@
                                         <td>{{ item.title }}</td>
                                         <td>{{ item.code }}</td>
                                         <td>R{{ item.price }}</td>
+                                        <td> {{ item.notes }} </td>
                                     </tr>
                                     {% endfor %}
                                 </tbody>
